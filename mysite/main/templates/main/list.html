@@ -9,35 +9,42 @@ View List
 
 {% block content %}
     <!-- Show name of to do list -->
-    <h1>{{ls.name}}</h1>
+    <h3>{{ls.name}}</h3>
     <!-- Define a form -->
     <form method="post" action="#">
         <!-- Need csrf_token to allow submit action on post method form -->
         {% csrf_token %}
-        <ul>
+        
             <!-- Use python code to loop through list elements -->
             {% for item in ls.item_set.all %}
-                {% if item.complete == True %}
-                    <li>
-                        <input  type="checkbox" value="clicked"
-                                name="c{{item.id}}"  checked>{{item.text}}
-                    </li>
-                {% else %}
-                    <li>
-                        <input  type="checkbox" value="clicked"
-                                name="c{{item.id}}">{{item.text}}
-                    </li>
-                {% endif %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                    {% if item.complete == True %}
+                        <input  type="checkbox" value="clicked" name="c{{item.id}}"  checked>                
+                    {% else %}
+                        <input  type="checkbox" value="clicked" name="c{{item.id}}">
+                    {% endif %}
+                    </div>
+                </div>
+                <!-- Display the items -->
+                <input type="text" value="{{item.text}}" class="form-control">
+            </div>
             {% endfor %}
-        </ul>
+        
         <!-- Define buttons at bottom of form -->
-        <!-- First one is to save changes of updating checkbox buttons.
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <!-- Take text from text fied and add to the list -->
+                <button type="submit" name="newItem" value="newItem" class="btn btn-success">Add Item</button>
+            </div>
+            <!-- Allow user to type text into a field -->
+            <input type="text" name="new">
+        </div>
+        
+        <!-- save changes of updating checkbox buttons.
                 Names are added to dictionary and are mapped out in views.py -->
-        <button type="submit", name="save", value="save">Save</button>
-        <!-- Next is allow user to type text into a field -->
-        <input type="text", name="new">
-        <!-- Take text from text fied and add to the list -->
-        <button type="submit", name="newItem", value="newItem">Add Item</button>
+        <button type="submit" name="save" value="save" class="btn btn-success">Save</button>
     </form>
 {% endblock %}
 
